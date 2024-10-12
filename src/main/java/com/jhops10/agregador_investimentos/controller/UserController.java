@@ -27,8 +27,13 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUser(@PathVariable("userId") String userId) {
-        //
-        return null;
+        var user = userService.getUserById(userId);
+
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
 }

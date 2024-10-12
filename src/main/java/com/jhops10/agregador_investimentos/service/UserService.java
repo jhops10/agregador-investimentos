@@ -6,6 +6,7 @@ import com.jhops10.agregador_investimentos.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -28,4 +29,14 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
+    public Optional<User> getUserById(String userId) {
+        return userRepository.findById(UUID.fromString(userId));
+
+    }
+
+
+
+
+
 }
