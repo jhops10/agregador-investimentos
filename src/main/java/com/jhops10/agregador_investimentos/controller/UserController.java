@@ -1,6 +1,7 @@
 package com.jhops10.agregador_investimentos.controller;
 
 import com.jhops10.agregador_investimentos.controller.dto.CreateUserDto;
+import com.jhops10.agregador_investimentos.controller.dto.UpdateUserDto;
 import com.jhops10.agregador_investimentos.entity.User;
 import com.jhops10.agregador_investimentos.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,14 @@ public class UserController {
     public ResponseEntity<List<User>> findAllUsers() {
         var users = userService.getAllUsers();
         return ResponseEntity.ok(users);
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<Void> updateUserById(@PathVariable("userId") String userId,
+                                               @RequestBody UpdateUserDto updateUserDto) {
+
+        userService.updateUserById(userId, updateUserDto);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{userId}")
