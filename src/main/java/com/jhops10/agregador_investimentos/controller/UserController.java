@@ -4,7 +4,6 @@ import com.jhops10.agregador_investimentos.controller.dto.CreateUserDto;
 import com.jhops10.agregador_investimentos.controller.dto.UpdateUserDto;
 import com.jhops10.agregador_investimentos.entity.User;
 import com.jhops10.agregador_investimentos.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
