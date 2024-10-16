@@ -72,4 +72,6 @@ public class UserController {
         var accounts = userService.getAllAccounts(userId);
         return ResponseEntity.ok(accounts);
     }
+
+
 }
