@@ -1,5 +1,6 @@
 package com.jhops10.agregador_investimentos.controller;
 
+import com.jhops10.agregador_investimentos.controller.dto.CreateAccountDto;
 import com.jhops10.agregador_investimentos.controller.dto.CreateUserDto;
 import com.jhops10.agregador_investimentos.controller.dto.UpdateUserDto;
 import com.jhops10.agregador_investimentos.entity.User;
@@ -55,5 +56,12 @@ public class UserController {
     public ResponseEntity<Void> deleteById(@PathVariable("userId") String userId) {
         userService.deleteUserById(userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{userId}/accounts")
+    public ResponseEntity<Void> createAccount(@PathVariable("userId") String userId,
+                                           @RequestBody CreateAccountDto createAccountDto) {
+        userService.createAccount(userId, createAccountDto);
+        return ResponseEntity.ok().build();
     }
 }
