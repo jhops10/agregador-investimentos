@@ -1,8 +1,6 @@
 package com.jhops10.agregador_investimentos.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
@@ -11,10 +9,16 @@ import java.util.UUID;
 public class BillingAddress {
 
     @Id
+    @Column(name = "account_id")
     private UUID id;
 
     private String street;
     private Integer number;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "account_id")
+    private Account account;
 
 
     public BillingAddress() {
