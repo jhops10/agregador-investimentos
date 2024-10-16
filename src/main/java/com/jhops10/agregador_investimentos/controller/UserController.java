@@ -1,8 +1,10 @@
 package com.jhops10.agregador_investimentos.controller;
 
+import com.jhops10.agregador_investimentos.controller.dto.AccountResponseDto;
 import com.jhops10.agregador_investimentos.controller.dto.CreateAccountDto;
 import com.jhops10.agregador_investimentos.controller.dto.CreateUserDto;
 import com.jhops10.agregador_investimentos.controller.dto.UpdateUserDto;
+import com.jhops10.agregador_investimentos.entity.Account;
 import com.jhops10.agregador_investimentos.entity.User;
 import com.jhops10.agregador_investimentos.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -63,5 +65,11 @@ public class UserController {
                                            @RequestBody CreateAccountDto createAccountDto) {
         userService.createAccount(userId, createAccountDto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{userId}/accounts")
+    public ResponseEntity<List<AccountResponseDto>> getAccounts(@PathVariable("userId") String userId) {
+        var accounts = userService.getAllAccounts(userId);
+        return ResponseEntity.ok(accounts);
     }
 }

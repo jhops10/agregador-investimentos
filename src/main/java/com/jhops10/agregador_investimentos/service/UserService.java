@@ -1,5 +1,6 @@
 package com.jhops10.agregador_investimentos.service;
 
+import com.jhops10.agregador_investimentos.controller.dto.AccountResponseDto;
 import com.jhops10.agregador_investimentos.controller.dto.CreateAccountDto;
 import com.jhops10.agregador_investimentos.controller.dto.CreateUserDto;
 import com.jhops10.agregador_investimentos.controller.dto.UpdateUserDto;
@@ -109,5 +110,17 @@ public class UserService {
         );
 
         billingAddressRepository.save(billingAddress);
+    }
+
+    public List<AccountResponseDto> getAllAccounts(String userId) {
+
+        var user = userRepository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return user.getAccounts()
+                .stream().map(account ->
+                        new AccountResponseDto(account.getAccount_id().toString(), account.getDescription()))
+                .toList();
+
     }
 }
