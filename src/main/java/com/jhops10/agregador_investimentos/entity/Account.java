@@ -2,6 +2,7 @@ package com.jhops10.agregador_investimentos.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,37 +12,40 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID account_id;
-
-    @Column(name = "description")
-    private String description;
+    @Column(name = "account_id")
+    private UUID accountId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "account")
     @PrimaryKeyJoinColumn
     private BillingAddress billingAddress;
 
-    @OneToMany(mappedBy = "account")
-    private List<AccountStock> accountStocks;
+    @Column(name = "description")
+    private String description;
 
+    @OneToMany(mappedBy = "account")
+    private List<AccountStock> accountStocks = new ArrayList<>();
 
     public Account() {
     }
 
-    public Account(UUID account_id, String description) {
-        this.account_id = account_id;
+    public Account(UUID accountId, User user, BillingAddress billingAddress, String description, List<AccountStock> accountStocks) {
+        this.accountId = accountId;
+        this.user = user;
+        this.billingAddress = billingAddress;
         this.description = description;
+        this.accountStocks = accountStocks;
     }
 
-    public UUID getAccount_id() {
-        return account_id;
+    public UUID getAccountId() {
+        return accountId;
     }
 
-    public void setAccount_id(UUID account_id) {
-        this.account_id = account_id;
+    public void setAccountId(UUID accountId) {
+        this.accountId = accountId;
     }
 
     public String getDescription() {
@@ -58,5 +62,21 @@ public class Account {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public BillingAddress getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(BillingAddress billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
+    public List<AccountStock> getAccountStocks() {
+        return accountStocks;
+    }
+
+    public void setAccountStocks(List<AccountStock> accountStocks) {
+        this.accountStocks = accountStocks;
     }
 }
