@@ -54,7 +54,7 @@ API RESTful para gerenciar contas de investimentos. Ele permite criar usuários,
 - **Spring Data JPA**
 - **MySQL**
 - **Maven**
-- **[Brapi Api](https://brapi.dev/)**
+- **[Brapi API](https://brapi.dev/)**
 
 
 
