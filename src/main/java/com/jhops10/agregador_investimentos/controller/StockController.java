@@ -1,6 +1,7 @@
 package com.jhops10.agregador_investimentos.controller;
 
 import com.jhops10.agregador_investimentos.controller.dto.CreateStockDto;
+import com.jhops10.agregador_investimentos.entity.User;
 import com.jhops10.agregador_investimentos.service.StockService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,17 +15,16 @@ import java.net.URI;
 @RequestMapping("/v1/stocks")
 public class StockController {
 
-    private final StockService stockService;
+    private StockService stockService;
 
     public StockController(StockService stockService) {
         this.stockService = stockService;
     }
 
     @PostMapping
-    public ResponseEntity<Void> createStock(@RequestBody CreateStockDto createStockDto) {
+    public ResponseEntity<User> createStock(@RequestBody CreateStockDto createStockDto) {
         stockService.createStock(createStockDto);
+
         return ResponseEntity.ok().build();
     }
-
-
 }

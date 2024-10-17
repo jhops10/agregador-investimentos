@@ -162,7 +162,7 @@ class UserServiceTest {
             var userList = List.of(user);
             doReturn(userList).when(userRepository).findAll();
             //Act
-            var output = userService.getAllUsers();
+            var output = userService.listUsers();
 
             //Assert
 
@@ -191,7 +191,7 @@ class UserServiceTest {
             var userId = UUID.randomUUID();
             //Act
 
-            userService.deleteUserById(userId.toString());
+            userService.deleteById(userId.toString());
 
             //Assert
             var idList = uuidArgumentCaptor.getAllValues();
@@ -215,7 +215,7 @@ class UserServiceTest {
             var userId = UUID.randomUUID();
             //Act
 
-            userService.deleteUserById(userId.toString());
+            userService.deleteById(userId.toString());
 
             //Assert
             assertEquals(userId, uuidArgumentCaptor.getValue());

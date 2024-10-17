@@ -14,9 +14,9 @@ public class StockService {
         this.stockRepository = stockRepository;
     }
 
+
     public void createStock(CreateStockDto createStockDto) {
 
-       //DTO -> Entity
         var stock = new Stock(
                 createStockDto.stockId(),
                 createStockDto.description()

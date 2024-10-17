@@ -3,41 +3,41 @@ package com.jhops10.agregador_investimentos.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tb_accountStocks")
+@Table(name = "tb_accountstocks")
 public class AccountStock {
 
     @EmbeddedId
-    private AccountStockId id;
+    private AccountStockId accountStockId;
 
     @ManyToOne
+    @JoinColumn(name = "account_id")
     @MapsId("accountId")
-    @JoinColumn(name = "accountId")
     private Account account;
 
     @ManyToOne
+    @JoinColumn(name = "stock_id")
     @MapsId("stockId")
-    @JoinColumn(name = "stockId")
     private Stock stock;
 
-
-    private Integer quantity;
+    @Column(name = "quantity")
+    private int quantity;
 
     public AccountStock() {
     }
 
-    public AccountStock(AccountStockId id, Account account, Stock stock, Integer quantity) {
-        this.id = id;
+    public AccountStock(AccountStockId accountStockId, Account account, Stock stock, int quantity) {
+        this.accountStockId = accountStockId;
         this.account = account;
         this.stock = stock;
         this.quantity = quantity;
     }
 
-    public AccountStockId getId() {
-        return id;
+    public AccountStockId getAccountStockId() {
+        return accountStockId;
     }
 
-    public void setId(AccountStockId id) {
-        this.id = id;
+    public void setAccountStockId(AccountStockId accountStockId) {
+        this.accountStockId = accountStockId;
     }
 
     public Account getAccount() {
@@ -56,11 +56,11 @@ public class AccountStock {
         this.stock = stock;
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 }

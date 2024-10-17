@@ -20,44 +20,55 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
+
     private final BillingAddressRepository billingAddressRepository;
 
-    public UserService(UserRepository userRepository, AccountRepository accountRepository, BillingAddressRepository billingAddressRepository) {
+    public UserService(UserRepository userRepository,
+                       AccountRepository accountRepository,
+                       BillingAddressRepository billingAddressRepository) {
         this.userRepository = userRepository;
         this.accountRepository = accountRepository;
         this.billingAddressRepository = billingAddressRepository;
     }
 
-    public User createUser(CreateUserDto createUserDto) {
-        var user = new User();
-        user.setUserId(UUID.randomUUID());
-        user.setEmail(createUserDto.email());
-        user.setUsername(createUserDto.username());
-        user.setPassword(createUserDto.password());
-        user.setCreationTimestamp(Instant.now());
-        user.setUpdateTimestamp(null);
+    public UUID createUser(CreateUserDto createUserDto) {
 
-        return userRepository.save(user);
+        // DTO -> ENTITY
+        var entity = new User(
+                UUID.randomUUID(),
+                createUserDto.username(),
+                createUserDto.email(),
+                createUserDto.password(),
+                Instant.now(),
+                null);
+
+        var userSaved = userRepository.save(entity);
+
+        return userSaved.getUserId();
     }
 
     public Optional<User> getUserById(String userId) {
-        return userRepository.findById(UUID.fromString(userId));
 
+        return userRepository.findById(UUID.fromString(userId));
     }
 
-    public List<User> getAllUsers() {
+    public List<User> listUsers() {
         return userRepository.findAll();
     }
 
     public void updateUserById(String userId,
                                UpdateUserDto updateUserDto) {
 
-        var userEntity = userRepository.findById(UUID.fromString(userId));
+        var id = UUID.fromString(userId);
+
+        var userEntity = userRepository.findById(id);
 
         if (userEntity.isPresent()) {
             var user = userEntity.get();
@@ -75,52 +86,51 @@ public class UserService {
 
     }
 
-    public void deleteUserById(String userId) {
-        var userExist = userRepository.existsById(UUID.fromString(userId));
+    public void deleteById(String userId) {
 
-        if (userExist) {
-            userRepository.deleteById(UUID.fromString(userId));
+        var id = UUID.fromString(userId);
+
+        var userExists = userRepository.existsById(id);
+
+        if (userExists) {
+            userRepository.deleteById(id);
         }
-
-
     }
 
     public void createAccount(String userId, CreateAccountDto createAccountDto) {
 
         var user = userRepository.findById(UUID.fromString(userId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não existe"));
 
-        //DTO -> Entity
+        if (isNull(user.getAccounts())) {
+            user.setAccounts(new ArrayList<>());
+        }
 
+        // DTO -> ENTITY
         var account = new Account(
                 UUID.randomUUID(),
-                createAccountDto.description(),
                 user,
                 null,
+                createAccountDto.description(),
                 new ArrayList<>()
         );
 
         var accountCreated = accountRepository.save(account);
 
         var billingAddress = new BillingAddress(
-            accountCreated.getAccount_id(),
+                accountCreated.getAccountId(),
+                accountCreated,
                 createAccountDto.street(),
-                createAccountDto.number(),
-                account
+                createAccountDto.number()
         );
 
         billingAddressRepository.save(billingAddress);
     }
 
-    public List<AccountResponseDto> getAllAccounts(String userId) {
-
+    public List<Account> findAccounts(String userId) {
         var user = userRepository.findById(UUID.fromString(userId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não existe"));
 
-        return user.getAccounts()
-                .stream().map(account ->
-                        new AccountResponseDto(account.getAccount_id().toString(), account.getDescription()))
-                .toList();
-
+        return user.getAccounts();
     }
 }
