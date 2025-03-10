@@ -1,6 +1,6 @@
 # Agregador de Investimentos
 
-API RESTful para gerenciar contas de investimentos. Ele permite criar usuários, associar contas com diferentes tipos de investimentos, adicionar investimentos às contas e saber o valor total do investimento.
+API para gerenciar contas de investimentos. Ele permite criar usuários, associar contas com diferentes tipos de investimentos, adicionar investimentos às contas e saber o valor total do investimento.
 
 ## Funcionalidades
 
